@@ -51,6 +51,8 @@ public enum MMInline {
     case code(String)                             // Inline monospaced code
     case link(label: String, action: String)      // Inline tappable link
     case image(name: String, alt: String?)        // Inline image/asset
+    case condensed([MMInline])                    // Condensed width text span
+    case expanded([MMInline])                     // Expanded width text span
 }
 
 // MARK: - Helpers
@@ -89,6 +91,8 @@ extension MMInline {
         case .code(let str): return str
         case .link(let label, _): return label
         case .image(_, let alt): return alt ?? ""
+        case .condensed(let children): return children.map(\.plainText).joined()
+        case .expanded(let children): return children.map(\.plainText).joined()
         }
     }
 }

@@ -153,6 +153,26 @@ public struct MMConverter {
                 continue
             }
             
+            // Condensed --text--
+            if i + 1 < chars.count, ch == "-", chars[i+1] == "-" {
+                flushBuffer()
+                i += 2
+                let (content, jump) = extract(until: "--", from: chars, start: i)
+                result.append(.condensed(parseInlines(content)))
+                i = jump
+                continue
+            }
+            
+            // Expanded ++text++
+            if i + 1 < chars.count, ch == "+", chars[i+1] == "+" {
+                flushBuffer()
+                i += 2
+                let (content, jump) = extract(until: "++", from: chars, start: i)
+                result.append(.expanded(parseInlines(content)))
+                i = jump
+                continue
+            }
+            
             // Italic *text*
             if ch == "*" {
                 flushBuffer()

@@ -64,7 +64,8 @@ public struct MMRenderer: View {
                 print("Link tapped: \(action)")
             }
             .foregroundColor(.blue)
-            .underline()
+            .fontWeight(.bold)
+            .fontWidth(.expanded)
         case .divider:
             Divider()
         case .image(let name, let alt):
@@ -109,6 +110,10 @@ public struct MMRenderer: View {
                     } else {
                         Text("[Image: \(alt ?? name)]").foregroundColor(.red)
                     }
+                case .condensed(let inner):
+                    AnyView(renderInlines(inner).fontWidth(.condensed))
+                case .expanded(let inner):
+                    AnyView(renderInlines(inner).fontWidth(.expanded))
                 }
             }
         }
@@ -120,25 +125,12 @@ public struct MMRenderer: View {
 struct MMRenderer_Previews: PreviewProvider {
     static var previews: some View {
         let mmText = """
-        # Welcome [SFSYM:hand.wave]
-        ## Subtitle Example
-        This is a **bold** and *italic* text. _Underlined text_.
-        - First bullet
-        - Second bullet
-        1. Ordered item one
-        2. Ordered item two
-        > This is a quote
-        ```
-        let x = 42
-        print(x)
-        ```
-        [LINK: Learn More|openLearnMore]
-        [IMAGE: example|Example Image]
-        ---
-        """
-        let document = MMConverter.parse(mmText)
-        MMRenderer(document: document)
-            .previewLayout(.sizeThatFits)
-    }
+         
+
+"""
+let document = MMConverter.parse(mmText)
+MMRenderer(document: document)
+    .previewLayout(.sizeThatFits)
+}
 }
 #endif

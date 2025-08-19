@@ -106,6 +106,14 @@ public class MMBuilder {
         return .image(name: name, alt: alt)
     }
     
+    public func condensed(_ inlines: [MMInline]) -> MMInline {
+        return .condensed(inlines)
+    }
+    
+    public func expanded(_ inlines: [MMInline]) -> MMInline {
+        return .expanded(inlines)
+    }
+    
     // MARK: - Build
     
     public func build() -> MMDocument {
