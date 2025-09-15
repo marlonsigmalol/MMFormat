@@ -18,11 +18,11 @@ public struct MMSkeleton: View {
     @State private var gradientEnd = UnitPoint(x: 0, y: 0)
     
     public var body: some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
+        RoundedRectangle(cornerRadius: height / 2)
             .fill(Color.gray.opacity(0.3))
             .frame(width: width, height: height)
             .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
+                RoundedRectangle(cornerRadius: height / 2, style: .continuous)
                     .fill(
                         LinearGradient(
                             gradient: Gradient(colors: [Color.gray.opacity(0.3), Color.white.opacity(0.2), Color.gray.opacity(0.3)]),

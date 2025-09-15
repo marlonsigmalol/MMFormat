@@ -23,13 +23,13 @@ public class MMRemoteLoader {
 // MARK: - SwiftUI Convenience View
 public struct MMRemoteDocumentView: View {
     let url: URL
-    let placeholderCount: Int
+    var skeletonHeight: CGFloat = 30
+    var skeletonSpacing: CGFloat = 8
 
     @State private var document: MMDocument? = nil
 
-    public init(url: URL, placeholderCount: Int = 6) {
+    public init(url: URL) {
         self.url = url
-        self.placeholderCount = placeholderCount
     }
 
     public var body: some View {
@@ -39,13 +39,20 @@ public struct MMRemoteDocumentView: View {
                     MMRenderer(document: doc)
                 }
             } else {
-                VStack(spacing: 12) {
-                    ForEach(0..<placeholderCount, id: \.self) { _ in
-                        MMSkeleton(height: 20)
+                GeometryReader { geo in
+                    let availableHeight = geo.size.height
+                    let totalSkeletonHeight = skeletonHeight + skeletonSpacing
+                    let skeletonCount = max(1, Int(availableHeight / totalSkeletonHeight))
+
+                    VStack(spacing: skeletonSpacing) {
+                        ForEach(0..<skeletonCount, id: \.self) { _ in
+                            MMSkeleton(height: skeletonHeight)
+                        }
                     }
+                    .padding()
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+                    .onAppear { loadDocument() }
                 }
-                .padding()
-                .onAppear { loadDocument() }
             }
         }
     }
@@ -60,6 +67,8 @@ public struct MMRemoteDocumentView: View {
         }
     }
 }
+
+
 
 struct MMAsync_Previews: PreviewProvider {
     static var previews: some View {
